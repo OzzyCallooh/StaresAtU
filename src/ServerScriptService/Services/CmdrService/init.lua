@@ -12,17 +12,24 @@ function CmdrService.init(self: CmdrService)
 end
 
 function CmdrService.AddCmdrContent(self: CmdrService, container: Instance)
+	local didAddSomething = false
 	local hooks = container:FindFirstChild("Hooks")
 	if hooks then
-		Cmdr:RegisterHooksIn(script.Hooks)
+		Cmdr:RegisterHooksIn(container.Hooks)
+		didAddSomething = true
 	end
 	local types = container:FindFirstChild("Types")
 	if types then
-		Cmdr:RegisterTypesIn(script.Types)
+		Cmdr:RegisterTypesIn(container.Types)
+		didAddSomething = true
 	end
 	local commands = container:FindFirstChild("Commands")
 	if commands then
-		Cmdr:RegisterCommandsIn(script.Commands)
+		Cmdr:RegisterCommandsIn(container.Commands)
+		didAddSomething = true
+	end
+	if not didAddSomething then
+		warn(("CmdrService.AddCmdrContent: No content found in %s"):format(container:GetFullName()))
 	end
 end
 
