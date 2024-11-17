@@ -8,7 +8,7 @@ local Services = require(ReplicatedStorage.Utilities.Services)
 local Server: Services.Services = Services
 Server.serviceModules = {
 	ServerScriptService.Services.PlayerDataService,
-	ServerScriptService.Services.CmdrStartupService,
+	ServerScriptService.Services.CmdrService,
 	ServerScriptService.Services.HomesteadService,
 	ServerScriptService.Services.CurrencyService,
 }
