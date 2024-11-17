@@ -4,15 +4,15 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local utilities = ReplicatedStorage.Utilities
 local Cmdr = require(utilities.Cmdr)
 
-local CmdrStartupService = {}
+local CmdrService = {}
 
-function CmdrStartupService.init(self: CmdrStartupService)
+function CmdrService.init(self: CmdrService)
 	Cmdr:RegisterDefaultCommands()
 	Cmdr:RegisterHooksIn(script.Hooks)
 	Cmdr:RegisterTypesIn(script.Types)
 	Cmdr:RegisterCommandsIn(script.Commands)
 end
 
-type CmdrStartupService = typeof(CmdrStartupService)
+type CmdrService = typeof(CmdrService)
 
-return CmdrStartupService
+return CmdrService
