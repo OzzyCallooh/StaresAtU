@@ -1,8 +1,7 @@
 --!strict
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local utilities = ReplicatedStorage.Utilities
-local Cmdr = require(utilities.Cmdr)
+local Cmdr = require(ReplicatedStorage.Packages.Cmdr)
 
 local CmdrService = {}
 
