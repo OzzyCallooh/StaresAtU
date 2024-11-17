@@ -8,9 +8,22 @@ local CmdrService = {}
 
 function CmdrService.init(self: CmdrService)
 	Cmdr:RegisterDefaultCommands()
-	Cmdr:RegisterHooksIn(script.Hooks)
-	Cmdr:RegisterTypesIn(script.Types)
-	Cmdr:RegisterCommandsIn(script.Commands)
+	self:AddCmdrContent(script)
+end
+
+function CmdrService.AddCmdrContent(self: CmdrService, container: Instance)
+	local hooks = container:FindFirstChild("Hooks")
+	if hooks then
+		Cmdr:RegisterHooksIn(script.Hooks)
+	end
+	local types = container:FindFirstChild("Types")
+	if types then
+		Cmdr:RegisterTypesIn(script.Types)
+	end
+	local commands = container:FindFirstChild("Commands")
+	if commands then
+		Cmdr:RegisterCommandsIn(script.Commands)
+	end
 end
 
 type CmdrService = typeof(CmdrService)
