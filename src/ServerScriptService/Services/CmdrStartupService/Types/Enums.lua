@@ -2,7 +2,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Enums = require(ReplicatedStorage.Enums)
 
-return function (registry)
+return function(registry)
 	for enumName: string, enumValues: { [string]: string } in Enums do
 		local enumValuesAsArray = {}
 		for _, enumValue in enumValues do

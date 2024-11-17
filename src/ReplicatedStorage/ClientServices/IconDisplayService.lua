@@ -22,7 +22,7 @@ function IconDisplayService.init(self: IconDisplayService)
 		sound.SoundId = `rbxassetid://90017054299588`
 		UI.Enabled = false
 		UI.Parent = player:WaitForChild("PlayerGui")
-		ContentProvider:PreloadAsync({UI})
+		ContentProvider:PreloadAsync({ UI })
 		sound.Volume = 1
 		sound:Play()
 		task.wait(0.3)
@@ -37,7 +37,11 @@ function IconDisplayService.init(self: IconDisplayService)
 		end)
 		task.wait(1)
 		if label:IsDescendantOf(player) then
-			local tween = TweenService:Create(label, TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.In), { ImageTransparency = 1 })
+			local tween = TweenService:Create(
+				label,
+				TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.In),
+				{ ImageTransparency = 1 }
+			)
 			tween:Play()
 		end
 	end)

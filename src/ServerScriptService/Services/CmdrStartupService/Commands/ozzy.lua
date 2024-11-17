@@ -1,12 +1,12 @@
 --!strict
 return {
-	Name = "ozzy";
+	Name = "ozzy",
 	Description = "",
-	Group = "Admin";
+	Group = "Admin",
 	Args = {
 		{
-			Type = "robloxEnumUserInputState";
-			Name = "weekdays";
-		};
-	};
+			Type = "robloxEnumUserInputState",
+			Name = "weekdays",
+		},
+	},
 }

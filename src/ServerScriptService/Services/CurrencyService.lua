@@ -9,9 +9,7 @@ local Enums = require(ReplicatedStorage.Enums)
 
 local CurrencyService = {}
 
-function CurrencyService.init(self: CurrencyService)
-	
-end
+function CurrencyService.init(self: CurrencyService) end
 
 export type CurrencyService = typeof(CurrencyService)
 

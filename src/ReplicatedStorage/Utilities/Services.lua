@@ -5,28 +5,28 @@ local Players = game:GetService("Players")
 local Functions = require(ReplicatedStorage.Utilities.Functions)
 
 export type Service = {
-	init: (Service)->(),
-	onPlayerAdded: (Service, Player)->()?;
-	onPlayerRemoving: (Service, Player)->()?;
+	init: (Service) -> (),
+	onPlayerAdded: (Service, Player) -> ()?,
+	onPlayerRemoving: (Service, Player) -> ()?,
 }
 
 export type Services = {
 	-- Properties
-	serviceModules: {ModuleScript},
-	services: {Service},
+	serviceModules: { ModuleScript },
+	services: { Service },
 	_loaded: boolean,
-	
+
 	-- Methods
-	load: (self: Services)->(),
-	init: (self: Services)->(),
-	callEachService: <T...>(self: Services, fnName: string, T...)->(),
-	_onPlayerAdded: (self: Services, Player)->(),
-	_onPlayerRemoving: (self: Services, Player)->(),
+	load: (self: Services) -> (),
+	init: (self: Services) -> (),
+	callEachService: <T...>(self: Services, fnName: string, T...) -> (),
+	_onPlayerAdded: (self: Services, Player) -> (),
+	_onPlayerRemoving: (self: Services, Player) -> (),
 }
 
 local Services = {}
-Services.serviceModules = {} :: {ModuleScript}
-Services.services = {} :: {Service}
+Services.serviceModules = {} :: { ModuleScript }
+Services.services = {} :: { Service }
 Services._loaded = false
 
 --[[
@@ -49,10 +49,10 @@ function Services.init(self: Services)
 	self:callEachService("init", self)
 
 	-- Player lifecycle
-	Players.PlayerAdded:Connect(function (player: Player)
+	Players.PlayerAdded:Connect(function(player: Player)
 		self:_onPlayerAdded(player)
 	end)
-	Players.PlayerRemoving:Connect(function (player: Player)
+	Players.PlayerRemoving:Connect(function(player: Player)
 		self:_onPlayerRemoving(player)
 	end)
 	for _, player: Player in Players:GetPlayers() do
@@ -66,7 +66,7 @@ end
 ]]
 function Services.callEachService<T...>(self: Services, fnName: string, ...: T...)
 	for _, service: Service in self.services do
-		local fn = service[fnName] :: (Service, T...)->()?
+		local fn = service[fnName] :: (Service, T...) -> ()?
 		if fn then
 			task.spawn(fn, service, ...)
 		end

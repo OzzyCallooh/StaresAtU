@@ -1,4 +1,4 @@
 --!strict
 return {
-	["Gold"] = "Gold";
+	["Gold"] = "Gold",
 }

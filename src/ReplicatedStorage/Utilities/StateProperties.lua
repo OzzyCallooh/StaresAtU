@@ -47,12 +47,12 @@ export type PropertyValues = { [string]: any }
 export type StatePropertiesImpl = {
 	__index: StatePropertiesImpl,
 
-	-- Constructors	
-	fromPrefixedAttributes: (Instance, attributePrefix: string)->(),
-	new: (Instance, PropertyValues)->(StateProperties),
+	-- Constructors
+	fromPrefixedAttributes: (Instance, attributePrefix: string) -> (),
+	new: (Instance, PropertyValues) -> StateProperties,
 
-	Apply: (self: StateProperties)->(),
-	Check: (self: StateProperties)->(),
+	Apply: (self: StateProperties) -> (),
+	Check: (self: StateProperties) -> (),
 }
 
 export type StateProperties = typeof(setmetatable(
@@ -61,7 +61,7 @@ export type StateProperties = typeof(setmetatable(
 		PropertyValues: PropertyValues,
 	},
 	{} :: StatePropertiesImpl
-	))
+))
 
 local StateProperties: StatePropertiesImpl = {} :: StatePropertiesImpl
 StateProperties.__index = StateProperties
@@ -70,8 +70,8 @@ StateProperties.__index = StateProperties
 	Returns a copy of dictionary containing only the keys which began with
 	keyPrefix in the original. The copy's keys have the prefix removed.
 ]]
-local function extractPrefixedKeys(dictionary: {[string]: any}, keyPrefix: string)
-	local unprefixed: {[string]: any} = {}
+local function extractPrefixedKeys(dictionary: { [string]: any }, keyPrefix: string)
+	local unprefixed: { [string]: any } = {}
 	for key, value in dictionary do
 		if beginsWith(key, keyPrefix) then
 			local unprefixedKey = key:sub(keyPrefix:len() + 1)
@@ -86,14 +86,14 @@ end
 	on the given instance.
 ]]
 function StateProperties.fromPrefixedAttributes(instance: Instance, attributePrefix: string): StateProperties
-	local propertyValues: {[string]: any} = extractPrefixedKeys(instance:GetAttributes(), attributePrefix)
+	local propertyValues: { [string]: any } = extractPrefixedKeys(instance:GetAttributes(), attributePrefix)
 	return StateProperties.new(instance, propertyValues)
 end
 
 --[[
 	Constructs a new StateProperties object for a given instance and dictionary of property values.
 ]]
-function StateProperties.new(instance: Instance, propertyValues: {[string]: any}): StateProperties
+function StateProperties.new(instance: Instance, propertyValues: { [string]: any }): StateProperties
 	assert(typeof(instance) == "Instance", "argument 1 expects instance")
 	assert(typeof(propertyValues) == "table", "argument 2 expects table")
 	local self = setmetatable({}, StateProperties)

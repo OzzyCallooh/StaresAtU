@@ -25,7 +25,7 @@ end
 
 local function main()
 	waitForPlayerData()
-	
+
 	-- Do loading spiel
 	local elapsed: number
 	elapsed = benchmark(Client.load, Client)
@@ -35,5 +35,3 @@ local function main()
 end
 
 main()
-
-

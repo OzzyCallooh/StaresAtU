@@ -5,9 +5,9 @@ Signal.__index = Signal
 
 function Signal.new()
 	local self = setmetatable({
-		_connections = {};
+		_connections = {},
 	}, Signal)
-	
+
 	return self
 end
 

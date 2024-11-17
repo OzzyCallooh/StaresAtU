@@ -1,6 +1,6 @@
 --!strict
 
-export type Function<Args..., Rets...> = (Args...)->(Rets...)
+export type Function<Args..., Rets...> = (Args...) -> Rets...
 
 --[[
 	A module containing helpers for using calling and wrapping functions.
@@ -33,7 +33,7 @@ end
 function Functions.limitCalls<T..., U...>(fn: Function<T..., U...>, maxCalls_: number?): Function<T..., U...>
 	local maxCalls = maxCalls_ or 1
 	local calls = 0
-	local wrapped: Function<T..., U...> = function (...: T...): U...
+	local wrapped: Function<T..., U...> = function(...: T...): U...
 		if calls >= maxCalls then
 			error("Function call limit reached", 2)
 		end
@@ -77,7 +77,7 @@ end
 function Functions.strictMutex<T..., U...>(fn: Function<T..., U...>, maxThreads_: number?): Function<T..., U...>
 	local maxThreads: number = maxThreads_ or 1
 	local numThreads = 0
-	local wrapped: Function<T..., U...> = function (...: T...): U...
+	local wrapped: Function<T..., U...> = function(...: T...): U...
 		if numThreads >= maxThreads then
 			error("Function is already running", 2)
 		end

@@ -1,5 +1,5 @@
 --!strict
 
 return {
-	Weekday = require(script.Weekday);
+	Weekday = require(script.Weekday),
 }

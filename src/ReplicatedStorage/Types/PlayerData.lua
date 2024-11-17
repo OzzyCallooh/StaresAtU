@@ -1,7 +1,7 @@
 --!strict
 
 export type PlayerData = {
-	Currencies: { [string]: number }
+	Currencies: { [string]: number },
 }
 
 return {}

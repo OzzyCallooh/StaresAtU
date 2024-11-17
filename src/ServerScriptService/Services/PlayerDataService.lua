@@ -24,7 +24,7 @@ local PlayerDataService = {}
 
 PlayerDataService.playerLoaded = Signal.new()
 
-PlayerDataService._playerData = {} :: {[Player]: PlayerData.PlayerData}
+PlayerDataService._playerData = {} :: { [Player]: PlayerData.PlayerData }
 
 function PlayerDataService.init(self: PlayerDataService)
 	getPlayerData.OnServerInvoke = function(player: Player): PlayerData.PlayerData?
@@ -46,12 +46,16 @@ end
 function PlayerDataService._loadPlayer(self: PlayerDataService, player: Player)
 	local playerData = DataStorage:load(player)
 	if not playerData.success then
-		player:Kick(`Failed to load player data: {playerData.message} - if this issue persists, please contact support!`)
+		player:Kick(
+			`Failed to load player data: {playerData.message} - if this issue persists, please contact support!`
+		)
 		return
 	end
 	local reconciledData = self:reconcilePlayerData(player, playerData.result or {})
 	if not reconciledData.success then
-		player:Kick(`Failed to reconcile player data: {reconciledData.message} - if this issue persists, please contact support!`)
+		player:Kick(
+			`Failed to reconcile player data: {reconciledData.message} - if this issue persists, please contact support!`
+		)
 		return
 	end
 	if not player:IsDescendantOf(Players) then
@@ -60,10 +64,10 @@ function PlayerDataService._loadPlayer(self: PlayerDataService, player: Player)
 	self._playerData[player] = reconciledData.result
 
 	print(("Player data loaded for %s (%d)"):format(player.Name, player.UserId))
-	
+
 	-- Notify other services
 	Server:callEachService("onPlayerDataLoaded", player, reconciledData)
-	
+
 	self.playerLoaded:fire(player)
 	playerDataLoaded:FireClient(player, reconciledData)
 end
@@ -83,7 +87,11 @@ end
 
 type UpdateCallback = (PlayerData.PlayerData) -> ()
 
-function PlayerDataService.updatePlayerData(self: PlayerDataService, player: Player, updateCallback: UpdateCallback): PlayerData.PlayerData
+function PlayerDataService.updatePlayerData(
+	self: PlayerDataService,
+	player: Player,
+	updateCallback: UpdateCallback
+): PlayerData.PlayerData
 	local data = self:getPlayerData(player)
 	updateCallback(data)
 	playerDataChanged:FireClient(player, data)
@@ -100,7 +108,7 @@ end
 function PlayerDataService.reconcilePlayerData(
 	self: PlayerDataService,
 	player: Player,
-	data: {[string]: any}
+	data: { [string]: any }
 ): Result.Result<PlayerData.PlayerData>
 	if not data.cash then
 		data.cash = 0
@@ -111,12 +119,10 @@ function PlayerDataService.reconcilePlayerData(
 	end
 
 	return {
-		success = true;
-		result = data;
+		success = true,
+		result = data,
 	}
 end
-
-
 
 type PlayerDataService = typeof(PlayerDataService)
 
