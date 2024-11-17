@@ -9,11 +9,14 @@ local PlayerData = require(ReplicatedStorage.Types.PlayerData)
 local Enums = require(ReplicatedStorage.Enums)
 local Currency = Enums.Currency
 
+local CmdrService = require(script.Parent.CmdrService)
 local PlayerDataService = require(script.Parent.PlayerDataService)
 
 local CurrencyService = {}
 
-function CurrencyService.init(self: CurrencyService) end
+function CurrencyService.init(self: CurrencyService)
+	CmdrService:AddCmdrContent(script.Cmdr)
+end
 
 function CurrencyService.getCurrency(self: CurrencyService, player: Player, currency: string): number
 	local playerData = PlayerDataService:getPlayerData(player)
