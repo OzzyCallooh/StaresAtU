@@ -6,8 +6,8 @@ local Services = require(ReplicatedStorage.Utilities.Services)
 
 local Client: Services.Services = Services
 Client.serviceModules = {
-	ReplicatedStorage.ClientServices.CmdrClientStartupService,
-	ReplicatedStorage.ClientServices.IconDisplayService,
+	ReplicatedStorage.Controllers.CmdrController,
+	ReplicatedStorage.Controllers.IconDisplayController,
 }
 
 return Client

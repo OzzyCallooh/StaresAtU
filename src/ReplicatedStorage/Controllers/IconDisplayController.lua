@@ -9,9 +9,9 @@ local showIconRemote = remotes.showIcon
 
 local player = Players.LocalPlayer
 
-local IconDisplayService = {}
+local IconDisplayController = {}
 
-function IconDisplayService.init(self: IconDisplayService)
+function IconDisplayController.init(self: IconDisplayController)
 	showIconRemote.OnClientEvent:Connect(function(iconId: number)
 		local UI = Instance.new("ScreenGui")
 		local label = Instance.new("ImageLabel", UI)
@@ -47,6 +47,6 @@ function IconDisplayService.init(self: IconDisplayService)
 	end)
 end
 
-type IconDisplayService = typeof(IconDisplayService)
+type IconDisplayController = typeof(IconDisplayController)
 
-return IconDisplayService
+return IconDisplayController

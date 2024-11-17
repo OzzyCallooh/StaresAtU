@@ -3,12 +3,12 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local CmdrClient = require(ReplicatedStorage:WaitForChild("CmdrClient"))
 
-local CmdrClientStartupService = {}
+local CmdrController = {}
 
-function CmdrClientStartupService.init(self: CmdrClientStartupService)
+function CmdrController.init(self: CmdrController)
 	CmdrClient:SetActivationKeys({ Enum.KeyCode.F2 })
 end
 
-type CmdrClientStartupService = typeof(CmdrClientStartupService)
+type CmdrController = typeof(CmdrController)
 
-return CmdrClientStartupService
+return CmdrController
