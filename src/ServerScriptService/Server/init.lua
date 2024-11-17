@@ -10,6 +10,7 @@ Server.serviceModules = {
 	ServerScriptService.Services.PlayerDataService,
 	ServerScriptService.Services.CmdrStartupService,
 	ServerScriptService.Services.HomesteadService,
+	ServerScriptService.Services.CurrencyService,
 }
 
 return Server
