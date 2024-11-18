@@ -14,17 +14,17 @@ function CmdrService.AddCmdrContent(self: CmdrService, container: Instance)
 	local didAddSomething = false
 	local hooks = container:FindFirstChild("Hooks")
 	if hooks then
-		Cmdr:RegisterHooksIn(container.Hooks)
+		Cmdr:RegisterHooksIn(hooks)
 		didAddSomething = true
 	end
 	local types = container:FindFirstChild("Types")
 	if types then
-		Cmdr:RegisterTypesIn(container.Types)
+		Cmdr:RegisterTypesIn(types)
 		didAddSomething = true
 	end
 	local commands = container:FindFirstChild("Commands")
 	if commands then
-		Cmdr:RegisterCommandsIn(container.Commands)
+		Cmdr:RegisterCommandsIn(commands)
 		didAddSomething = true
 	end
 	if not didAddSomething then
