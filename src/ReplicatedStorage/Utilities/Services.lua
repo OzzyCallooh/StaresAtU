@@ -13,11 +13,13 @@ export type Service = {
 export type Services = {
 	-- Properties
 	serviceModules: { ModuleScript },
-	services: { Service },
+	services: { [string]: Service },
 	_loaded: boolean,
 
 	-- Methods
 	load: (self: Services) -> (),
+	getService: (self: Services, string) -> Service,
+	getController: (self: Services, string) -> Service,
 	init: (self: Services) -> (),
 	callEachService: <T...>(self: Services, fnName: string, T...) -> (),
 	_onPlayerAdded: (self: Services, Player) -> (),
@@ -27,6 +29,7 @@ export type Services = {
 local Services = {}
 Services.serviceModules = {} :: { ModuleScript }
 Services.services = {} :: { Service }
+Services.servicesMap = {} :: { [string]: Service }
 Services._loaded = false
 
 --[[
@@ -34,12 +37,25 @@ Services._loaded = false
 ]]
 function Services.load(self: Services)
 	for _, serviceModule: ModuleScript in self.serviceModules do
+		assert(
+			not self.services[serviceModule.Name],
+			("Duplicate service module: %s "):format(serviceModule:GetFullName())
+		)
 		local service = require(serviceModule) :: Service
-		table.insert(self.services, service)
+		self.services[serviceModule.Name] = service
 	end
 	self._loaded = true
 end
 Services.load = Functions.callOnce(Functions.strictMutex(Services.load))
+
+--[[
+	Returns a service of a particular name
+]]
+function Services.getService(self: Services, name: string): Service
+	return assert(self.services[name], ("No such service: %s"):format(name))
+end
+-- Alias
+Services.getController = Services.getService
 
 --[[
 	Initializes each of the services, and begins the player life cycle.
@@ -65,7 +81,7 @@ end
 	Return values are discarded.
 ]]
 function Services.callEachService<T...>(self: Services, fnName: string, ...: T...)
-	for _, service: Service in self.services do
+	for _serviceName: string, service: Service in self.services do
 		local fn = service[fnName] :: (Service, T...) -> ()?
 		if fn then
 			task.spawn(fn, service, ...)
