@@ -95,6 +95,7 @@ function PlayerDataService.updatePlayerData(
 	local data = self:getPlayerData(player)
 	updateCallback(data)
 	playerDataChanged:FireClient(player, data)
+	Server:callEachService("onPlayerDataChanged", player, data)
 	return data
 end
 

@@ -24,11 +24,12 @@ function CurrencyService.getCurrency(self: CurrencyService, player: Player, curr
 end
 
 function CurrencyService.setCurrency(self: CurrencyService, player: Player, currency: string, newValue: number)
-	local playerData = PlayerDataService:getPlayerData(player)
-	if not playerData.Currencies then
-		playerData.Currencies = {}
-	end
-	playerData.Currencies[currency] = newValue
+	PlayerDataService:updatePlayerData(player, function(playerData)
+		if not playerData.Currencies then
+			playerData.Currencies = {}
+		end
+		playerData.Currencies[currency] = newValue
+	end)
 	print(("Set currency %s to %d for player %s"):format(currency, newValue, player.Name))
 end
 
