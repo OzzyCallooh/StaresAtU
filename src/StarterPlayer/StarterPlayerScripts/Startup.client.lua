@@ -5,7 +5,7 @@ local remotes = ReplicatedStorage.Remotes
 local getPlayerData = remotes.getPlayerData
 local playerDataLoaded = remotes.playerDataLoaded
 
-local Client = require(script.Parent)
+local Client = require(ReplicatedStorage.Client)
 
 local function waitForPlayerData()
 	-- Wait for player data to load
