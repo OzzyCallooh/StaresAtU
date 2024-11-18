@@ -1,0 +1,59 @@
+{
+	// Place your StaresAtU workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"New Service/Controller": {
+		"scope": "lua,luau",
+		"prefix": [
+			"newservice",
+			"newcontroller"
+		],
+		"body": [
+			"--!strict",
+			"",
+			"--[[",
+			"\t$2",
+			"]]",
+			"local ${1:$TM_FILENAME_BASE} = {}",
+			"",
+			"function ${1}.init(self: ${1})",
+			"\t-- TODO",
+			"end",
+			"",
+			"export type ${1} = typeof(${1})",
+			"",
+			"return ${1}",
+			"",
+		],
+		"description": "New service"
+	},
+	"Get Service": {
+		"scope": "lua,luau",
+		"prefix": "getservice",
+		"body": [
+			"local ${1} = require(ServerScriptService.Services.$1)",
+		],
+		"description": "Get Service"
+	},
+	"Get Controller": {
+		"scope": "lua,luau",
+		"prefix": "getcontroller",
+		"body": [
+			"local ${1} = require(ReplicatedStorage.Controllers.$1)",
+		],
+		"description": "Get Service"
+	},
+}
