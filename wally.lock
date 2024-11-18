@@ -8,6 +8,11 @@ version = "1.12.0"
 dependencies = []
 
 [[package]]
+name = "evaera/promise"
+version = "4.0.0"
+dependencies = []
+
+[[package]]
 name = "ozzy/staresatu"
 version = "0.1.0"
-dependencies = [["Cmdr", "evaera/cmdr@1.12.0"]]
+dependencies = [["Cmdr", "evaera/cmdr@1.12.0"], ["Promise", "evaera/promise@4.0.0"]]
