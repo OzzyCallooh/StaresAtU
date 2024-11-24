@@ -1,5 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local Attributes = require(ReplicatedStorage.Utilities.Attributes)
+
 local CurrencyController = require(ReplicatedStorage.Controllers.CurrencyController)
 
 local Component = require(ReplicatedStorage.Packages.Component)
@@ -7,16 +9,10 @@ local Component = require(ReplicatedStorage.Packages.Component)
 local CurrencyDisplay = Component.new({
 	Tag = "CurrencyDisplay",
 })
-CurrencyDisplay.ATTR_CURRENCY_NAME = "CurrencyName"
-CurrencyDisplay.ATTR_FORMAT = "Format"
 
-function CurrencyDisplay:GetCurrencyName()
-	return self.Instance:GetAttribute(CurrencyDisplay.ATTR_CURRENCY_NAME) :: string
-end
-
-function CurrencyDisplay:GetFormat()
-	return self.Instance:GetAttribute(CurrencyDisplay.ATTR_FORMAT) :: string
-end
+CurrencyDisplay.Attributes = Attributes.wrapComponentClass(CurrencyDisplay)
+CurrencyDisplay.Attributes[{ get = "GetCurrencyName", set = "SetCurrencyName" }] = "CurrencyName"
+CurrencyDisplay.Attributes[{ get = "GetFormat", set = "SetFormat" }] = "Format"
 
 function CurrencyDisplay:GetCurrency()
 	local currencyValue = CurrencyController:getCurrency(self:GetCurrencyName())
