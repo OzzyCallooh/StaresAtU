@@ -32,7 +32,7 @@ function PlayerDataController.pullPlayerData(self: PlayerDataController)
 end
 
 function PlayerDataController.processData(self: PlayerDataController, newPlayerData)
-	self.playerData = getPlayerData:InvokeServer()
+	self.playerData = newPlayerData
 	self.onPlayerDataChangedSignal:Fire(self.playerData)
 end
 
