@@ -21,10 +21,12 @@ export type Services = {
 	-- Methods
 	load: (self: Services) -> (),
 	getService: (self: Services, string) -> Service,
-	getController: (self: Services, string) -> Service,
 	init: (self: Services) -> (),
 	callEachService: <T...>(self: Services, fnName: string, T...) -> (),
 	addAliasForSignal: (self: Services, string, Signal) -> (),
+}
+export type ServicesWithAliases = Services & {
+	getController: typeof(({} :: Services).getService),
 }
 
 local Services = {}
@@ -101,4 +103,4 @@ end
 Services:addAliasForSignal("onPlayerAdded", Players.PlayerAdded)
 Services:addAliasForSignal("onPlayerRemoving", Players.PlayerRemoving)
 
-return Services :: Services
+return Services :: ServicesWithAliases
