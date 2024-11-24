@@ -46,33 +46,24 @@ function PlayerDataService.init(self: PlayerDataService)
 end
 
 function PlayerDataService._loadPlayer(self: PlayerDataService, player: Player)
-	local playerData = DataStorage:load(player)
-	if not playerData.success then
+	local playerDataLoadResult = DataStorage:load(player)
+	if not playerDataLoadResult.success then
 		player:Kick(
-			`Failed to load player data: {playerData.message} - if this issue persists, please contact support!`
+			`Failed to load player data: {playerDataLoadResult.message} - if this issue persists, please contact support!`
 		)
 		return
 	end
-	local reconciledData = {
-		success = true,
-		result = playerData.result or {},
-	}
-	Server:callEachService("reconcilePlayerData", player, reconciledData.result)
-	if not reconciledData.success then
-		player:Kick(
-			`Failed to reconcile player data: {reconciledData.message} - if this issue persists, please contact support!`
-		)
-		return
-	end
+	Server:callEachService("reconcilePlayerData", player, playerDataLoadResult.result or {})
+	local reconciledData = playerDataLoadResult.result :: PlayerData.PlayerData
 	if not player:IsDescendantOf(Players) then
 		return -- player left during loading
 	end
-	self._playerData[player] = reconciledData.result
+	self._playerData[player] = reconciledData
 
 	print(("Player data loaded for %s (%d)"):format(player.Name, player.UserId))
 
-	self.onPlayerDataLoadedSignal:Fire(player, reconciledData.result)
-	playerDataLoaded:FireClient(player, reconciledData.result)
+	self.onPlayerDataLoadedSignal:Fire(player, reconciledData)
+	playerDataLoaded:FireClient(player, reconciledData)
 end
 
 function PlayerDataService._unloadPlayer(self: PlayerDataService, player: Player)
