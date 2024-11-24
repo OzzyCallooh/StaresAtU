@@ -1,5 +1,7 @@
 --!strict
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Signal = require(ReplicatedStorage.Packages.Signal)
+
 local PlayerData = require(ReplicatedStorage.Types.PlayerData)
 
 local Server = require(script.Parent.Parent.Server)
@@ -13,6 +15,11 @@ local Homestead = require(script.Homestead)
 	Manages an instance which is cloned during the player's presence in the game.
 ]]
 local HomesteadService = {}
+
+HomesteadService.onHomesteadLoadedSignal = Signal.new()
+Server:addAliasForSignal("onHomesteadLoaded", HomesteadService.onHomesteadLoadedSignal)
+HomesteadService.onHomesteadUnloadingSignal = Signal.new()
+Server:addAliasForSignal("onHomesteadUnloading", HomesteadService.onHomesteadUnloadingSignal)
 
 HomesteadService._homesteads = {}
 HomesteadService._homesteadPrefab = ReplicatedStorage.Assets.Homestead.Prototype :: Model
@@ -38,7 +45,7 @@ function HomesteadService._loadHomestead(self: HomesteadService, player: Player,
 	assert(plot, "No available plots")
 	local homestead: Homestead.Homestead = Homestead.new(plot, self._homesteadPrefab, player)
 	self._homesteads[player] = homestead
-	Server:callEachService("onHomesteadLoaded", player, homestead)
+	self.onHomesteadLoadedSignal:Fire(player, homestead)
 	PlayerSpawnService:setPlayerSpawn(player, plot:GetCFrame())
 end
 
@@ -47,7 +54,7 @@ function HomesteadService._unloadHomestead(self: HomesteadService, player: Playe
 	if not homestead then
 		return
 	end
-	Server:callEachService("onHomesteadUnloading", player, homestead)
+	self.onHomesteadUnloadingSignal:Fire(player, homestead)
 	self._homesteads[player] = nil
 	homestead:Destroy()
 end

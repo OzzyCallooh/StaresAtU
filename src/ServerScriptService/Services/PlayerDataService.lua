@@ -21,7 +21,10 @@ local Server = require(script.Parent.Parent.Server)
 
 local PlayerDataService = {}
 
-PlayerDataService.playerLoaded = Signal.new()
+PlayerDataService.onPlayerDataLoadedSignal = Signal.new()
+Server:addAliasForSignal("onPlayerDataLoaded", PlayerDataService.onPlayerDataLoadedSignal)
+PlayerDataService.onPlayerDataChangedSignal = Signal.new()
+Server:addAliasForSignal("onPlayerDataChanged", PlayerDataService.onPlayerDataChangedSignal)
 
 PlayerDataService._playerData = {} :: { [Player]: PlayerData.PlayerData }
 
@@ -64,11 +67,8 @@ function PlayerDataService._loadPlayer(self: PlayerDataService, player: Player)
 
 	print(("Player data loaded for %s (%d)"):format(player.Name, player.UserId))
 
-	-- Notify other services
-	Server:callEachService("onPlayerDataLoaded", player, reconciledData)
-
-	self.playerLoaded:Fire(player)
-	playerDataLoaded:FireClient(player, reconciledData)
+	self.onPlayerDataLoadedSignal:Fire(player, reconciledData.result)
+	playerDataLoaded:FireClient(player, reconciledData.result)
 end
 
 function PlayerDataService._unloadPlayer(self: PlayerDataService, player: Player)
@@ -94,7 +94,7 @@ function PlayerDataService.updatePlayerData(
 	local data = self:getPlayerData(player)
 	updateCallback(data)
 	playerDataChanged:FireClient(player, data)
-	Server:callEachService("onPlayerDataChanged", player, data)
+	self.onPlayerDataChangedSignal:Fire(player, data)
 	return data
 end
 

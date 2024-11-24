@@ -17,7 +17,8 @@ export type Cursor = { string }
 
 local PlayerDataController = {}
 PlayerDataController.playerData = nil :: PlayerData.PlayerData?
-PlayerDataController.playerDataChanged = Signal.new()
+PlayerDataController.onPlayerDataChangedSignal = Signal.new()
+Client:addAliasForSignal("onPlayerDataChanged", PlayerDataController.onPlayerDataChangedSignal)
 
 function PlayerDataController.init(self: PlayerDataController)
 	task.spawn(self.pullPlayerData, self)
@@ -32,8 +33,7 @@ end
 
 function PlayerDataController:processData(newPlayerData)
 	self.playerData = getPlayerData:InvokeServer()
-	self.playerDataChanged:Fire(self.playerData)
-	Client:callEachService("onPlayerDataUpdated", self.playerData)
+	self.onPlayerDataChangedSignal:Fire(self.playerData)
 end
 
 function PlayerDataController.getPlayerData(self: PlayerDataController): PlayerData.PlayerData?
@@ -80,7 +80,7 @@ function PlayerDataController.observe(self: PlayerDataController, cursor: Cursor
 	local playerData = self:getPlayerData()
 	local currentValue = playerData and getCursorValue(playerData, cursor)
 	task.spawn(callback, currentValue)
-	return self.playerDataChanged:Connect(function(newPlayerData)
+	return self.onPlayerDataChangedSignal:Connect(function(newPlayerData)
 		local newValue = newPlayerData and getCursorValue(newPlayerData, cursor)
 		if not areSimilar(newValue, currentValue) then
 			currentValue = newValue
