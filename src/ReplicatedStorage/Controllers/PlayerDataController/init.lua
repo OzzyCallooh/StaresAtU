@@ -15,18 +15,11 @@ local PlayerData = require(types.PlayerData)
 
 export type Cursor = { string }
 
---[[
-	
-]]
 local PlayerDataController = {}
 PlayerDataController.playerData = nil :: PlayerData.PlayerData?
 PlayerDataController.playerDataChanged = Signal.new()
 
 function PlayerDataController.init(self: PlayerDataController)
-	self:observe({ "Currencies" }, function(currencies)
-		print(currencies)
-	end)
-
 	task.spawn(self.pullPlayerData, self)
 	playerDataChanged.OnClientEvent:Connect(function(newPlayerData)
 		self:processData(newPlayerData)
@@ -84,7 +77,6 @@ local function areSimilar(lhs: any, rhs: any): boolean
 end
 
 function PlayerDataController.observe(self: PlayerDataController, cursor: Cursor, callback: (any) -> ())
-	print("Observing", table.concat(cursor, "."))
 	local playerData = self:getPlayerData()
 	local currentValue = playerData and getCursorValue(playerData, cursor)
 	task.spawn(callback, currentValue)
