@@ -1,6 +1,9 @@
 --!strict
 
+local Types = require(script.Parent.Types)
 local Plot = require(script.Parent.Plot)
+
+export type Homestead = Types.Homestead
 
 local Homestead = {}
 Homestead.__index = Homestead

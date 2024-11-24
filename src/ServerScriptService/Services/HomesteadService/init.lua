@@ -32,12 +32,12 @@ function HomesteadService._loadHomestead(self: HomesteadService, player: Player,
 	assert(not self._homesteads[player], "Player homestead already exists")
 	local plot: Plot.Plot = self:_getFirstAvailablePlot()
 	assert(plot, "No available plots")
-	local homestead = Homestead.new(plot, self._homesteadPrefab, player)
+	local homestead: Homestead.Homestead = Homestead.new(plot, self._homesteadPrefab, player)
 	self._homesteads[player] = homestead
 end
 
 function HomesteadService._unloadHomestead(self: HomesteadService, player: Player)
-	local homestead = self._homesteads[player]
+	local homestead: Homestead.Homestead = self._homesteads[player]
 	if not homestead then
 		return
 	end
