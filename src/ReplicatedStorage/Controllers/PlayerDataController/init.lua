@@ -16,6 +16,7 @@ local PlayerData = require(types.PlayerData)
 export type Cursor = { string }
 
 local PlayerDataController = {}
+PlayerDataController._processCount = 0
 PlayerDataController.playerData = nil :: PlayerData.PlayerData?
 PlayerDataController.onPlayerDataChangedSignal = Signal.new()
 Client:addAliasForSignal("onPlayerDataChanged", PlayerDataController.onPlayerDataChangedSignal)
@@ -32,6 +33,7 @@ function PlayerDataController.pullPlayerData(self: PlayerDataController)
 end
 
 function PlayerDataController.processData(self: PlayerDataController, newPlayerData)
+	self._processCount += 1
 	self.playerData = newPlayerData
 	self.onPlayerDataChangedSignal:Fire(self.playerData)
 end
@@ -77,14 +79,20 @@ local function areSimilar(lhs: any, rhs: any): boolean
 end
 
 function PlayerDataController.observe(self: PlayerDataController, cursor: Cursor, callback: (any) -> ())
-	local playerData = self:getPlayerData()
-	local currentValue = playerData and getCursorValue(playerData, cursor)
-	task.spawn(callback, currentValue)
+	-- The initial invokation of the callback can only happen if player data has processed
+	-- at least once. Otherwise, it'll wait for the first player data change.
+	local currentValue
+	if self._processCount > 0 then
+		local playerData = self:getPlayerData()
+		currentValue = playerData and getCursorValue(playerData, cursor)
+		callback(currentValue)
+	end
+
 	return self.onPlayerDataChangedSignal:Connect(function(newPlayerData)
 		local newValue = newPlayerData and getCursorValue(newPlayerData, cursor)
 		if not areSimilar(newValue, currentValue) then
 			currentValue = newValue
-			task.spawn(callback, newValue)
+			callback(newValue)
 		end
 	end)
 end
