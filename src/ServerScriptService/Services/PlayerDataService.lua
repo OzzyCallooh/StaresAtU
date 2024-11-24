@@ -53,7 +53,11 @@ function PlayerDataService._loadPlayer(self: PlayerDataService, player: Player)
 		)
 		return
 	end
-	local reconciledData = self:reconcilePlayerData(player, playerData.result or {})
+	local reconciledData = {
+		success = true,
+		result = playerData.result or {},
+	}
+	Server:callEachService("reconcilePlayerData", player, reconciledData.result)
 	if not reconciledData.success then
 		player:Kick(
 			`Failed to reconcile player data: {reconciledData.message} - if this issue persists, please contact support!`
@@ -103,25 +107,6 @@ function PlayerDataService.waitForDataReady(self: PlayerDataService, player: Pla
 		task.wait()
 	end
 	return self:getPlayerData(player)
-end
-
-function PlayerDataService.reconcilePlayerData(
-	self: PlayerDataService,
-	player: Player,
-	data: { [string]: any }
-): Result.Result<PlayerData.PlayerData>
-	if not data.cash then
-		data.cash = 0
-	end
-
-	if not data.reputation then
-		data.reputation = 0
-	end
-
-	return {
-		success = true,
-		result = data,
-	}
 end
 
 type PlayerDataService = typeof(PlayerDataService)

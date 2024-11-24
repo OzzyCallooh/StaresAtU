@@ -20,14 +20,11 @@ end
 
 function CurrencyService.getCurrency(self: CurrencyService, player: Player, currency: string): number
 	local playerData = PlayerDataService:getPlayerData(player)
-	return playerData and playerData.Currencies and playerData.Currencies[currency] or 0
+	return playerData and playerData.Currencies[currency]
 end
 
 function CurrencyService.setCurrency(self: CurrencyService, player: Player, currency: string, newValue: number)
 	PlayerDataService:updatePlayerData(player, function(playerData)
-		if not playerData.Currencies then
-			playerData.Currencies = {}
-		end
 		playerData.Currencies[currency] = newValue
 	end)
 	print(("Set currency %s to %d for player %s"):format(currency, newValue, player.Name))
@@ -37,8 +34,7 @@ function CurrencyService.addCurrency(self: CurrencyService, player: Player, curr
 	self:setCurrency(player, currency, self:getCurrency(player, currency) + amount)
 end
 
-function CurrencyService.onPlayerDataLoaded(self: CurrencyService, player: Player, playerData: PlayerData.PlayerData)
-	print(("Player data loaded for %s (%d)"):format(player.Name, player.UserId))
+function CurrencyService.reconcilePlayerData(self: CurrencyService, player: Player, playerData: PlayerData.PlayerData)
 	local currencies = playerData.Currencies
 	if not currencies then
 		currencies = {}
@@ -50,7 +46,10 @@ function CurrencyService.onPlayerDataLoaded(self: CurrencyService, player: Playe
 			currencies[currency] = 0
 		end
 	end
+end
 
+function CurrencyService.onPlayerDataLoaded(self: CurrencyService, player: Player, playerData: PlayerData.PlayerData)
+	print(("Player data loaded for %s (%d)"):format(player.Name, player.UserId))
 	self:addCurrency(player, Currency.Gold, 100)
 end
 
