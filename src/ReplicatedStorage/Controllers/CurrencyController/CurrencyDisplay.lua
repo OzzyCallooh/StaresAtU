@@ -14,7 +14,7 @@ function CurrencyDisplay:GetCurrencyName()
 end
 
 function CurrencyDisplay:GetCurrency()
-	local currencyValue = CurrencyController:GetCurrency(self:GetCurrencyName())
+	local currencyValue = CurrencyController:getCurrency(self:GetCurrencyName())
 	return currencyValue
 end
 

@@ -102,6 +102,28 @@ function PlayerDataController.observe(self: PlayerDataController, cursor: Cursor
 	end)
 end
 
+export type WrappedCursor = {
+	get: (self: WrappedCursor) -> any,
+	observe: (self: WrappedCursor, (any) -> ()) -> RBXScriptConnection,
+	extend: (self: WrappedCursor, cursor: string) -> WrappedCursor,
+}
+
+function PlayerDataController.wrapCursor(self: PlayerDataController, cursor: Cursor): WrappedCursor
+	return {
+		get = function(_self)
+			return self:get(cursor)
+		end,
+		observe = function(_self, callback)
+			return self:observe(cursor, callback)
+		end,
+		extend = function(_self, key)
+			local newCursor = { table.unpack(cursor) }
+			table.insert(newCursor, key)
+			return self:wrapCursor(newCursor)
+		end,
+	}
+end
+
 export type PlayerDataController = typeof(PlayerDataController)
 
 return PlayerDataController
