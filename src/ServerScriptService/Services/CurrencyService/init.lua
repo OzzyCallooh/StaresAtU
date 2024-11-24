@@ -46,11 +46,18 @@ function CurrencyService.reconcilePlayerData(self: CurrencyService, player: Play
 			currencies[currency] = 0
 		end
 	end
+
+	if playerData.ReceivedFirstTimeBonus == nil then
+		playerData.ReceivedFirstTimeBonus = false
+	end
 end
 
 function CurrencyService.onPlayerDataLoaded(self: CurrencyService, player: Player, playerData: PlayerData.PlayerData)
-	print(("Player data loaded for %s (%d)"):format(player.Name, player.UserId))
-	self:addCurrency(player, Currency.Gold, 100)
+	if not playerData.ReceivedFirstTimeBonus then
+		print("Giving player first-time bonus")
+		self:addCurrency(player, Currency.Gold, 100)
+		playerData.ReceivedFirstTimeBonus = true
+	end
 end
 
 export type CurrencyService = typeof(CurrencyService)
