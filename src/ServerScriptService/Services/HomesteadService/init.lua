@@ -4,6 +4,8 @@ local PlayerData = require(ReplicatedStorage.Types.PlayerData)
 
 local Server = require(script.Parent.Parent.Server)
 
+local PlayerSpawnService = require(script.Parent.PlayerSpawnService)
+
 local Plot = require(script.Plot)
 local Homestead = require(script.Homestead)
 
@@ -37,6 +39,7 @@ function HomesteadService._loadHomestead(self: HomesteadService, player: Player,
 	local homestead: Homestead.Homestead = Homestead.new(plot, self._homesteadPrefab, player)
 	self._homesteads[player] = homestead
 	Server:callEachService("onHomesteadLoaded", player, homestead)
+	PlayerSpawnService:setPlayerSpawn(player, plot:GetCFrame())
 end
 
 function HomesteadService._unloadHomestead(self: HomesteadService, player: Player)
