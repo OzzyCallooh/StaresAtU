@@ -28,8 +28,7 @@ export type Services = {
 
 local Services = {}
 Services.serviceModules = {} :: { ModuleScript }
-Services.services = {} :: { Service }
-Services.servicesMap = {} :: { [string]: Service }
+Services.services = {} :: { [string]: Service }
 Services._loaded = false
 
 --[[
