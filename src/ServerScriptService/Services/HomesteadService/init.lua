@@ -2,6 +2,8 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local PlayerData = require(ReplicatedStorage.Types.PlayerData)
 
+local Server = require(script.Parent.Parent.Server)
+
 local Plot = require(script.Plot)
 local Homestead = require(script.Homestead)
 
@@ -34,6 +36,7 @@ function HomesteadService._loadHomestead(self: HomesteadService, player: Player,
 	assert(plot, "No available plots")
 	local homestead: Homestead.Homestead = Homestead.new(plot, self._homesteadPrefab, player)
 	self._homesteads[player] = homestead
+	Server:callEachService("onHomesteadLoaded", player, homestead)
 end
 
 function HomesteadService._unloadHomestead(self: HomesteadService, player: Player)
@@ -41,6 +44,7 @@ function HomesteadService._unloadHomestead(self: HomesteadService, player: Playe
 	if not homestead then
 		return
 	end
+	Server:callEachService("onHomesteadUnloading", player, homestead)
 	self._homesteads[player] = nil
 	homestead:Destroy()
 end
