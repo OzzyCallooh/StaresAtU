@@ -13,12 +13,20 @@ function CurrencyDisplay:GetCurrencyName()
 	return self.Instance:GetAttribute(CurrencyDisplay.ATTR_CURRENCY_NAME) :: string
 end
 
+function CurrencyDisplay:GetCurrency()
+	local currencyValue = CurrencyController:GetCurrency(self:GetCurrencyName())
+	return currencyValue
+end
+
+function CurrencyDisplay:Update()
+	self.Instance.Text = tostring(self:GetCurrency())
+end
+
 function CurrencyDisplay:Start()
 	print("CurrencyDisplay started", self.Instance:GetFullName())
 	local currencyName = self:GetCurrencyName()
-	CurrencyController:observeCurrency(currencyName, function(newCurrency)
-		print("CurrencyDisplay", currencyName, newCurrency)
-		self.Instance.Text = tostring(newCurrency)
+	CurrencyController:observeCurrency(currencyName, function(_newCurrency)
+		self:Update()
 	end)
 end
 
