@@ -55,7 +55,7 @@
 			"util",
 		],
 		"body": [
-			"local $1 = require(ReplicatedStorage.Utility.$1)",
+			"local $1 = require(ReplicatedStorage.Utilities.$1)",
 			"$0",
 		],
 		"description": "Require a utility module"
