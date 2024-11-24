@@ -78,6 +78,11 @@ local function areSimilar(lhs: any, rhs: any): boolean
 	end
 end
 
+function PlayerDataController.get(self: PlayerDataController, cursor: Cursor): any
+	local playerData = self:getPlayerData()
+	return playerData and getCursorValue(playerData, cursor)
+end
+
 function PlayerDataController.observe(self: PlayerDataController, cursor: Cursor, callback: (any) -> ())
 	-- The initial invokation of the callback can only happen if player data has processed
 	-- at least once. Otherwise, it'll wait for the first player data change.
