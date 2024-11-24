@@ -84,7 +84,7 @@ function Services.callEachService<T...>(self: Services, fnName: string, ...: T..
 	for _serviceName: string, service: Service in self.services do
 		local fn = service[fnName] :: (Service, T...) -> ()?
 		if fn then
-			task.spawn(fn, service, ...)
+			fn(service, ...)
 		end
 	end
 end
