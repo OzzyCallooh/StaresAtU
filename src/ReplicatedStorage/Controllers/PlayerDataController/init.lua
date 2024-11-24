@@ -1,7 +1,7 @@
 --!strict
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Signal = require(ReplicatedStorage.Utilities.Signal)
+local Signal = require(ReplicatedStorage.Packages.Signal)
 
 local Client = require(ReplicatedStorage.Client)
 
@@ -32,7 +32,7 @@ end
 
 function PlayerDataController:processData(newPlayerData)
 	self.playerData = getPlayerData:InvokeServer()
-	self.playerDataChanged:fire(self.playerData)
+	self.playerDataChanged:Fire(self.playerData)
 	Client:callEachService("onPlayerDataUpdated", self.playerData)
 end
 
@@ -80,7 +80,7 @@ function PlayerDataController.observe(self: PlayerDataController, cursor: Cursor
 	local playerData = self:getPlayerData()
 	local currentValue = playerData and getCursorValue(playerData, cursor)
 	task.spawn(callback, currentValue)
-	return self.playerDataChanged:connect(function(newPlayerData)
+	return self.playerDataChanged:Connect(function(newPlayerData)
 		local newValue = newPlayerData and getCursorValue(newPlayerData, cursor)
 		if not areSimilar(newValue, currentValue) then
 			currentValue = newValue

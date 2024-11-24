@@ -3,15 +3,14 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
+local Signal = require(ReplicatedStorage.Packages.Signal)
+
 local modules = ServerScriptService.Modules
 local DataStorage = require(modules.DataStorage)
 
 local types = ReplicatedStorage.Types
 local Result = require(types.Result)
 local PlayerData = require(types.PlayerData)
-
-local utilities = ReplicatedStorage.Utilities
-local Signal = require(utilities.Signal)
 
 local remotes = ReplicatedStorage.Remotes
 local getPlayerData = remotes.getPlayerData
@@ -68,7 +67,7 @@ function PlayerDataService._loadPlayer(self: PlayerDataService, player: Player)
 	-- Notify other services
 	Server:callEachService("onPlayerDataLoaded", player, reconciledData)
 
-	self.playerLoaded:fire(player)
+	self.playerLoaded:Fire(player)
 	playerDataLoaded:FireClient(player, reconciledData)
 end
 
