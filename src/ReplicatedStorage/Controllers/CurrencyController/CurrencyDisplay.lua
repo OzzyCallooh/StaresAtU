@@ -8,9 +8,14 @@ local CurrencyDisplay = Component.new({
 	Tag = "CurrencyDisplay",
 })
 CurrencyDisplay.ATTR_CURRENCY_NAME = "CurrencyName"
+CurrencyDisplay.ATTR_FORMAT = "Format"
 
 function CurrencyDisplay:GetCurrencyName()
 	return self.Instance:GetAttribute(CurrencyDisplay.ATTR_CURRENCY_NAME) :: string
+end
+
+function CurrencyDisplay:GetFormat()
+	return self.Instance:GetAttribute(CurrencyDisplay.ATTR_FORMAT) :: string
 end
 
 function CurrencyDisplay:GetCurrency()
@@ -19,7 +24,9 @@ function CurrencyDisplay:GetCurrency()
 end
 
 function CurrencyDisplay:Update()
-	self.Instance.Text = tostring(self:GetCurrency())
+	local format = self:GetFormat() or "%d"
+	local currencyValue = self:GetCurrency()
+	self.Instance.Text = format:format(currencyValue)
 end
 
 function CurrencyDisplay:Start()
