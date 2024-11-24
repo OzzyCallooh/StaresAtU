@@ -9,6 +9,7 @@ Client.serviceModules = {
 	ReplicatedStorage.Controllers.PlayerDataController,
 	ReplicatedStorage.Controllers.CmdrController,
 	ReplicatedStorage.Controllers.IconDisplayController,
+	ReplicatedStorage.Controllers.CurrencyController,
 }
 
 return Client
