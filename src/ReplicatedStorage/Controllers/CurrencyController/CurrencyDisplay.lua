@@ -1,13 +1,18 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local Component = require(ReplicatedStorage.Packages.Component)
+
+local TroveExtension = require(ReplicatedStorage.Utilities.Extensions.Trove)
+
 local Attributes = require(ReplicatedStorage.Utilities.Attributes)
 
 local CurrencyController = require(ReplicatedStorage.Controllers.CurrencyController)
 
-local Component = require(ReplicatedStorage.Packages.Component)
-
 local CurrencyDisplay = Component.new({
 	Tag = "CurrencyDisplay",
+	Extensions = {
+		TroveExtension,
+	},
 })
 
 CurrencyDisplay.Attributes = Attributes.wrapComponentClass(CurrencyDisplay)
@@ -28,9 +33,9 @@ end
 function CurrencyDisplay:Start()
 	print("CurrencyDisplay started", self.Instance:GetFullName())
 	local currencyName = self:GetCurrencyName()
-	CurrencyController:observeCurrency(currencyName, function(_newCurrency)
+	self.Trove:Add(CurrencyController:observeCurrency(currencyName, function(_newCurrency)
 		self:Update()
-	end)
+	end))
 end
 
 return CurrencyDisplay
