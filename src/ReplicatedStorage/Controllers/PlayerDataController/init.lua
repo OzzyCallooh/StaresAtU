@@ -27,11 +27,11 @@ function PlayerDataController.init(self: PlayerDataController)
 	end)
 end
 
-function PlayerDataController:pullPlayerData()
+function PlayerDataController.pullPlayerData(self: PlayerDataController)
 	self:processData(getPlayerData:InvokeServer())
 end
 
-function PlayerDataController:processData(newPlayerData)
+function PlayerDataController.processData(self: PlayerDataController, newPlayerData)
 	self.playerData = getPlayerData:InvokeServer()
 	self.onPlayerDataChangedSignal:Fire(self.playerData)
 end
